@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><title>Semantic Recorder — 动态用户</title>
+<style>body{font:16px system-ui;max-width:900px;margin:40px auto}table{border-collapse:collapse;width:100%}td,th{padding:12px;border:1px solid #ccc}form{display:flex;gap:12px;margin-bottom:24px}dialog{padding:24px}button{cursor:pointer}</style>
+<h1>动态用户列表</h1>
+<form aria-label="新增用户">
+<label>用户名<input name="username" required></label><label>邮箱<input name="email" type="email" required></label>
+<button type="submit">新增</button></form>
+<table aria-label="用户列表"><thead><tr><th scope="col">ID</th><th scope="col">用户名</th><th scope="col">邮箱</th><th scope="col">操作</th></tr></thead><tbody></tbody></table>
+<p role="status"></p>
+<dialog aria-label="删除确认"><p>确认删除此用户？</p><button id="confirm-delete">确认删除</button><button id="cancel-delete">取消</button></dialog>
+<section><h2>输入测试</h2><label>密码<input type="password" autocomplete="current-password"></label><label>接收通知<input type="checkbox"></label><label>角色<select><option value="user">普通用户</option><option value="admin">管理员</option></select></label></section>
+<p><a href="?view=next" id="navigate">导航</a> <a href="?popup=1" target="_blank">新标签页</a></p>
+<script>
+let nextId=1001; let pending;
+const tbody=document.querySelector('tbody'), dialog=document.querySelector('dialog'), status=document.querySelector('[role=status]');
+function add(username,email){const id=nextId;nextId+=1057;const row=document.createElement('tr');
+for(const value of [String(id),username,email]){const td=document.createElement('td');td.textContent=value;row.append(td)}
+const td=document.createElement('td'),button=document.createElement('button');button.id=`delete-${id}`;button.textContent='删除';
+button.addEventListener('click',()=>{pending=row;dialog.showModal()});td.append(button);row.append(td);tbody.append(row)}
+add('zhangsan','zhangsan@example.com');
+document.querySelector('form').addEventListener('submit',event=>{event.preventDefault();const f=event.currentTarget;add(f.elements.username.value,f.elements.email.value);status.textContent='新增成功';f.reset()});
+document.querySelector('#confirm-delete').addEventListener('click',()=>{pending?.remove();dialog.close();status.textContent='删除成功'});
+document.querySelector('#cancel-delete').addEventListener('click',()=>dialog.close());
+</script></html>
