@@ -1,0 +1,21 @@
+{
+  "name": "semantic-recorder",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "engines": {"node": ">=22"},
+  "exports": {".": "./dist/index.js"},
+  "types": "./dist/index.d.ts",
+  "bin": {"semantic-recorder": "./dist/cli/index.js"},
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && tsx scripts/build-injected.ts && tsx scripts/export-schema.ts",
+    "typecheck": "tsc --noEmit",
+    "record": "tsx src/cli/index.ts",
+    "test": "npm run build && vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "npm run build && vitest run tests/integration",
+    "fixture": "tsx scripts/serve-fixture.ts"
+  },
+  "dependencies": {"commander": "^14.0.0", "playwright": "^1.58.0", "zod": "^4.0.0"},
+  "devDependencies": {"@types/node": "^22.0.0", "esbuild": "^0.25.0", "tsx": "^4.20.0", "typescript": "^5.9.0", "vitest": "^3.2.0"}
+}
